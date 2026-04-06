@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Auto Backup exclusion rules (API 23-30).
+    Prevents EncryptedSharedPreferences (auth tokens) from being included in
+    Google Drive Auto Backup. The Keystore keys are hardware-bound and NOT
+    backed up, so restoring encrypted prefs to a new device causes
+    GeneralSecurityException on first read.
+
+    HOST APP: Reference this in your manifest with:
+        android:fullBackupContent="@xml/backup_rules"
+    Or merge these exclusions into your own backup_rules.xml.
+-->
+<full-backup-content>
+    <exclude domain="sharedpref" path="solana_mwa_auth_prefs.xml" />
+    <exclude domain="sharedpref" path="solana_mwa_auth_prefs.xml.bak" />
+</full-backup-content>

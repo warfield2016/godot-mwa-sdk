@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+        MWA requires querying for wallet apps that handle the solana-wallet:// scheme.
+        Required on Android 11+ (API 30+) due to package visibility restrictions.
+        Without this, PackageManager.queryIntentActivities() returns empty and wallet
+        discovery silently fails.
+
+        Privacy note: this reveals only that solana-wallet-compatible apps exist on the
+        device; it does not enumerate arbitrary installed packages.
+    -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="solana-wallet" />
+        </intent>
+    </queries>
+
+    <!--
+        networkSecurityConfig is not set here because manifest merger silently
+        overrides library-set attributes with the host app's value. The host app
+        must add android:networkSecurityConfig="@xml/network_security_config"
+        (or merge the 127.0.0.1 cleartext exemption) for MWA's loopback WebSocket.
+    -->
+    <application>
+        <meta-data
+            android:name="com.solanamwa.godot.PLUGIN_VERSION"
+            android:value="0.1.0" />
+    </application>
+
+</manifest>

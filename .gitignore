@@ -1,0 +1,50 @@
+# Build outputs
+build/
+android/build/
+android/plugin/build/
+android/.gradle/
+.gradle/
+local.properties
+*.iml
+.idea/
+*.ipr
+*.iws
+captures/
+
+# Godot
+.godot/
+.import/
+export.cfg
+export_presets.cfg
+*.translation
+
+# Compiled outputs
+**/bin/**/*.so
+**/bin/**/*.a
+**/bin/**/*.aar
+*.o
+*.obj
+*.apk
+*.aab
+
+# C++ build
+.sconsign*.dblite
+*.pyc
+__pycache__/
+
+# godot-cpp submodule build artifacts
+godot-cpp/bin/
+godot-cpp/gen/
+
+# macOS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.vscode/
+*.swp
+*.swo
+
+# Internal / private
+analysis/

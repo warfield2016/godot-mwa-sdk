@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Scoped cleartext opt-in for MWA localhost WebSocket.
+
+    MWA 2.0 establishes its encrypted session over ws://127.0.0.1:<port>/solana-wallet.
+    Since Android 9 (API 28), cleartext traffic is disabled by default. Without this
+    config, the loopback WebSocket will fail with
+    "CLEARTEXT communication ... not permitted by network security policy".
+
+    We opt IN cleartext ONLY for 127.0.0.1/localhost, and explicitly keep cleartext
+    DISABLED everywhere else via base-config. The MWA session crypto (P-256 ECDH +
+    AES-128-GCM) runs on top of the WebSocket and is independent of TLS — loopback
+    cleartext is safe because the encryption is application-layer.
+
+    INTEGRATION NOTE: This file is shipped as a TEMPLATE in the AAR. The host Godot
+    game app MUST reference it in their own AndroidManifest.xml:
+        android:networkSecurityConfig="@xml/network_security_config"
+    OR merge the 127.0.0.1/localhost domain-config into their existing config.
+    This file alone does nothing — the host manifest must point to it.
+-->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">127.0.0.1</domain>
+        <domain includeSubdomains="false">localhost</domain>
+    </domain-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

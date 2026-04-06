@@ -1,0 +1,13 @@
+[configuration]
+
+entry_symbol = "solana_mwa_library_init"
+compatibility_minimum = "4.2"
+
+[libraries]
+
+android.debug.arm64 = "res://addons/SolanaMWA/bin/debug/arm64-v8a/libSolanaMWA.so"
+android.release.arm64 = "res://addons/SolanaMWA/bin/release/arm64-v8a/libSolanaMWA.so"
+
+[dependencies]
+
+; Android dependencies are provided by the AAR plugin; no external deps needed here.
