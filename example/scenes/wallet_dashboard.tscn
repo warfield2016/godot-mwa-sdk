@@ -1,0 +1,72 @@
+[gd_scene load_steps=2 format=3 uid="uid://wallet_dashboard"]
+
+[ext_resource type="Script" path="res://scripts/wallet_dashboard.gd" id="1"]
+
+[node name="WalletDashboard" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 64.0
+offset_right = -32.0
+offset_bottom = -32.0
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="VBox"]
+layout_mode = 2
+text = "Wallet Dashboard"
+horizontal_alignment = 1
+
+[node name="AddressLabel" type="Label" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Address: ..."
+horizontal_alignment = 1
+
+[node name="ChainLabel" type="Label" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Chain: ..."
+horizontal_alignment = 1
+
+[node name="CacheStatusLabel" type="Label" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Cache: ..."
+horizontal_alignment = 1
+
+[node name="SignMessageButton" type="Button" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Sign Message"
+custom_minimum_size = Vector2(0, 48)
+
+[node name="CapabilitiesButton" type="Button" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "View Capabilities"
+custom_minimum_size = Vector2(0, 48)
+
+[node name="DisconnectButton" type="Button" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Disconnect"
+custom_minimum_size = Vector2(0, 48)
+
+[node name="ErrorLabel" type="Label" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = ""
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="MobileWalletAdapter" type="MobileWalletAdapter" parent="."]
+unique_name_in_owner = true

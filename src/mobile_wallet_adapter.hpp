@@ -12,8 +12,7 @@ class MobileWalletAdapter : public godot::Node {
     GDCLASS(MobileWalletAdapter, godot::Node)
 
 public:
-    // Negative values = protocol-level failures from the MWA spec.
-    // Positive values = transport / environment errors from the plugin.
+    // MWA 2.0 spec errors (negative, from wallet)
     enum {
         ERROR_AUTHORIZATION_FAILED  = -1,
         ERROR_INVALID_PAYLOADS      = -2,
@@ -22,12 +21,23 @@ public:
         ERROR_NOT_CLONED            = -5,
         ERROR_TOO_MANY_PAYLOADS     = -6,
         ERROR_CHAIN_NOT_SUPPORTED   = -7,
+        ERROR_ATTEST_ORIGIN         = -100,
+    };
 
-        ERROR_WALLET_NOT_FOUND      = 1,
-        ERROR_SESSION_TIMEOUT       = 2,
-        ERROR_SESSION_CLOSED        = 3,
-        ERROR_CLEARTEXT_NOT_PERMITTED = 4,
-        ERROR_NO_ACTIVE_SESSION     = 5,
+    // Plugin-level errors (positive, from SolanaMWAPlugin.kt)
+    enum {
+        ERR_CLEARTEXT_BLOCKED       = 1,
+        ERR_SESSION_START           = 2,
+        ERR_AUTHORIZE               = 3,
+        ERR_SIGN_TRANSACTIONS       = 4,
+        ERR_SIGN_MESSAGES           = 5,
+        ERR_SIGN_AND_SEND           = 6,
+        ERR_CAPABILITIES            = 7,
+        ERR_DEAUTHORIZE             = 8,
+        ERR_NO_SESSION              = 9,
+        ERR_WALLET_NOT_FOUND        = 10,
+        ERR_TIMEOUT                 = 11,
+        ERR_CANCELLED               = 12,
     };
 
     MobileWalletAdapter();

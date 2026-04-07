@@ -43,8 +43,9 @@ object MWAResultMapper {
     }
 
     /**
-     * Converts MWA Account objects to JSON: [{"address": "<base58>", "label": "<optional>"}].
-     * Uses reflection for forward-compatibility with clientlib Account class changes.
+     * Converts MWA Account objects to JSON.
+     * address is base64-encoded (C++ side decodes with Marshalls::base64_to_raw).
+     * address_b58 is base58-encoded (for display in GDScript without re-encoding).
      */
     fun accountsToJson(accounts: Array<*>): String {
         val arr = JSONArray()
@@ -52,11 +53,12 @@ object MWAResultMapper {
             if (account == null) continue
             val obj = JSONObject()
             try {
-                // clientlib 2.0.8: Account.publicKey (ByteArray), Account.accountLabel (String?)
                 val publicKeyField = account.javaClass.getDeclaredField("publicKey")
                 publicKeyField.isAccessible = true
                 val addressBytes = publicKeyField.get(account) as? ByteArray
-                obj.put("address", if (addressBytes != null) encodeBase58(addressBytes) else "")
+                obj.put("address", if (addressBytes != null)
+                    android.util.Base64.encodeToString(addressBytes, android.util.Base64.NO_WRAP) else "")
+                obj.put("address_b58", if (addressBytes != null) encodeBase58(addressBytes) else "")
 
                 val labelField = try {
                     account.javaClass.getDeclaredField("accountLabel").also { it.isAccessible = true }

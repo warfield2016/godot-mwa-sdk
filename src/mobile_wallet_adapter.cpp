@@ -188,7 +188,7 @@ String MobileWalletAdapter::_array_to_json(const Array &p_array) const {
 }
 
 void MobileWalletAdapter::_emit_not_available() {
-    emit_signal("error", ERROR_NO_ACTIVE_SESSION,
+    emit_signal("error", ERR_NO_SESSION,
                 String("MWA not available on this platform"));
 }
 
@@ -278,7 +278,7 @@ void MobileWalletAdapter::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::STRING, "chain"),
         "set_chain", "get_chain");
 
-    // Error code constants
+    // MWA 2.0 spec error codes (negative)
     BIND_CONSTANT(ERROR_AUTHORIZATION_FAILED);
     BIND_CONSTANT(ERROR_INVALID_PAYLOADS);
     BIND_CONSTANT(ERROR_NOT_SIGNED);
@@ -286,9 +286,19 @@ void MobileWalletAdapter::_bind_methods() {
     BIND_CONSTANT(ERROR_NOT_CLONED);
     BIND_CONSTANT(ERROR_TOO_MANY_PAYLOADS);
     BIND_CONSTANT(ERROR_CHAIN_NOT_SUPPORTED);
-    BIND_CONSTANT(ERROR_WALLET_NOT_FOUND);
-    BIND_CONSTANT(ERROR_SESSION_TIMEOUT);
-    BIND_CONSTANT(ERROR_SESSION_CLOSED);
-    BIND_CONSTANT(ERROR_CLEARTEXT_NOT_PERMITTED);
-    BIND_CONSTANT(ERROR_NO_ACTIVE_SESSION);
+    BIND_CONSTANT(ERROR_ATTEST_ORIGIN);
+
+    // Plugin-level error codes (positive, match SolanaMWAPlugin.kt)
+    BIND_CONSTANT(ERR_CLEARTEXT_BLOCKED);
+    BIND_CONSTANT(ERR_SESSION_START);
+    BIND_CONSTANT(ERR_AUTHORIZE);
+    BIND_CONSTANT(ERR_SIGN_TRANSACTIONS);
+    BIND_CONSTANT(ERR_SIGN_MESSAGES);
+    BIND_CONSTANT(ERR_SIGN_AND_SEND);
+    BIND_CONSTANT(ERR_CAPABILITIES);
+    BIND_CONSTANT(ERR_DEAUTHORIZE);
+    BIND_CONSTANT(ERR_NO_SESSION);
+    BIND_CONSTANT(ERR_WALLET_NOT_FOUND);
+    BIND_CONSTANT(ERR_TIMEOUT);
+    BIND_CONSTANT(ERR_CANCELLED);
 }
