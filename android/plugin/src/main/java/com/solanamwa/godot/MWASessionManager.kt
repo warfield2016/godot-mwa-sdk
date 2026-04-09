@@ -75,11 +75,11 @@ class MWASessionManager {
         return s.port
     }
 
-    /** ECDH association public key for the Intent URI's encrypted channel. */
-    fun getAssociationPublicKey(): ByteArray {
+    /** Session object for constructing the association Intent. */
+    fun getSession(): com.solana.mobilewalletadapter.clientlib.protocol.MobileWalletAdapterSession {
         val s = scenario
             ?: throw IllegalStateException("No active scenario. Call startSession() first.")
-        return s.associationPublicKey
+        return s.session
     }
 
     /** Gracefully closes the current session. No-op if no session is active. */

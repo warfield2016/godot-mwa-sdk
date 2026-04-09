@@ -116,19 +116,17 @@ class SolanaMWAPlugin(godot: Godot) : GodotPlugin(godot) {
 
                 sessionManager.endSession()
 
-                // Start the scenario async; the Intent below lets the wallet connect to its WebSocket
-                val clientDeferred = kotlinx.coroutines.async(Dispatchers.IO) {
+                // Start scenario — creates WebSocket server on a random loopback port
+                withContext(Dispatchers.IO) {
                     sessionManager.startSession()
                 }
 
-                kotlinx.coroutines.delay(100)  // Let the scenario bind its WebSocket port
-
                 val port = sessionManager.getPort()
-                val associationPublicKey = sessionManager.getAssociationPublicKey()
+                val session = sessionManager.getSession()
 
                 val associationIntent =
                     LocalAssociationIntentCreator.createAssociationIntent(
-                        null, port, associationPublicKey
+                        null, port, session
                     )
 
                 val resolved = associationIntent.resolveActivity(activity.packageManager)
@@ -140,8 +138,6 @@ class SolanaMWAPlugin(godot: Godot) : GodotPlugin(godot) {
                 }
 
                 activity.startActivity(associationIntent)
-
-                clientDeferred.await()
 
                 emitOnUiThread("session_ready")
             } catch (e: CancellationException) {
@@ -337,8 +333,10 @@ class SolanaMWAPlugin(godot: Godot) : GodotPlugin(godot) {
 
                 val maxTx = result.maxTransactionsPerSigningRequest
                 val maxMsg = result.maxMessagesPerSigningRequest
+                // Build features from available capability fields
                 val featuresJson = JSONArray().apply {
-                    result.supportedFeatures?.forEach { put(it) }
+                    if (result.supportsCloneAuthorization) put("solana:cloneAuthorization")
+                    if (result.supportsSignAndSendTransactions) put("solana:signAndSendTransaction")
                 }.toString()
 
                 emitOnUiThread("capabilities_result", maxTx, maxMsg, featuresJson)
